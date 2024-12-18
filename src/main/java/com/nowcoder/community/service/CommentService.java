@@ -41,7 +41,9 @@ public class CommentService implements CommunityConstant {
         }
 
         // 添加评论
+        // html转义
         comment.setContent(HtmlUtils.htmlEscape(comment.getContent()));
+        // 敏感词过滤
         comment.setContent(sensitiveFilter.filter(comment.getContent()));
         int rows = commentMapper.insertComment(comment);
 
@@ -52,5 +54,17 @@ public class CommentService implements CommunityConstant {
         }
 
         return rows;
+    }
+
+    public Comment findCommentById(int id){
+        return commentMapper.selectCommentById(id);
+    }
+
+    public int findAllCommentsCount(int entityType, int userId){
+        return commentMapper.selectAllCommentsCount(entityType, userId);
+    }
+
+    public List<Comment> findAllComments(int entityType, int userId, int offset, int limit){
+        return commentMapper.selectAllComments(entityType, userId, offset, limit);
     }
 }
