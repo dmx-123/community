@@ -1,23 +1,12 @@
 package com.nowcoder.community;
 
-
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.elasticsearch._types.SortOptions;
-import co.elastic.clients.elasticsearch._types.SortOptionsBuilders;
 import co.elastic.clients.elasticsearch._types.SortOrder;
-import co.elastic.clients.elasticsearch._types.query_dsl.MultiMatchQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.Query;
-import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
-import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
-import co.elastic.clients.elasticsearch.core.search.Highlight;
-import co.elastic.clients.elasticsearch.core.search.HighlightField;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
 import co.elastic.clients.elasticsearch.indices.GetIndexResponse;
-import co.elastic.clients.elasticsearch.ingest.Processor;
 import co.elastic.clients.transport.endpoints.BooleanResponse;
-import co.elastic.clients.transport.rest_client.RestClientHttpClient;
 import com.nowcoder.community.dao.DiscussPostMapper;
 import com.nowcoder.community.dao.elasticsearch.DiscussPostRepository;
 import com.nowcoder.community.entity.DiscussPost;
@@ -25,30 +14,22 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.annotations.Setting;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
-import org.springframework.data.elasticsearch.client.elc.NativeQueryBuilder;
-import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.HighlightQuery;
-import org.springframework.data.elasticsearch.core.query.SearchTemplateQuery;
-import org.springframework.data.elasticsearch.core.query.SearchTemplateQueryBuilder;
-import org.springframework.data.elasticsearch.core.suggest.response.SortBy;
-import org.springframework.data.redis.core.query.SortQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.highlight.Highlight;
+import org.springframework.data.elasticsearch.core.query.highlight.HighlightField;
+
+import org.springframework.data.elasticsearch.core.query.highlight.HighlightParameters;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import static co.elastic.clients.elasticsearch.ingest.Processor.Kind.Sort;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -101,9 +82,8 @@ public class ElasticsearchTests {
     }
 
     @Test
-    public void testSearchClient() throws Exception {
+    public void testSearchClient() throws IOException {
 
-        // 这里没明白呢。。anyway先不做了吧，接入另一个项目
         // 增加index
         CreateIndexResponse indexResponse = client.indices().create(c -> c.index("user"));
 
@@ -168,7 +148,47 @@ public class ElasticsearchTests {
 
     }
 
+    @Test
+    public void testSearchByTemplate() {
 
+        List<String> searchFiels = new ArrayList<>();
+        searchFiels.add("title");
+        searchFiels.add("content");
+        String keyword = "互联网寒冬";
+        List<HighlightField> highlightFields = new ArrayList<>();
+        highlightFields.add(new HighlightField("title"));
+        highlightFields.add(new HighlightField("content"));
+
+        NativeQuery query = NativeQuery.builder()
+                .withQuery(q -> q.multiMatch(t->t.fields(searchFiels).query(keyword)))
+                .withHighlightQuery(
+                        new HighlightQuery(
+                                new Highlight(
+                                        new HighlightParameters.HighlightParametersBuilder().withPreTags("<em>")
+                                                .withPostTags("</em>").build(), highlightFields), DiscussPost.class
+                        )
+                )
+                .withPageable(Pageable.ofSize(10).withPage(0))
+                .withSort(f->f.field(o->o.field("type").order(SortOrder.Desc)))
+                .withSort(f->f.field(o->o.field("score").order(SortOrder.Desc)))
+                .withSort(f->f.field(o->o.field("createTime").order(SortOrder.Desc)))
+                .build();
+        SearchHits<DiscussPost> searchHits = elasticTemplate.search(query, DiscussPost.class);
+        List<DiscussPost> discussPosts = new ArrayList<>();
+        searchHits.forEach(hit -> {
+            DiscussPost post = hit.getContent();
+//            post.setTitle(hit.getHighlightField("title").get(0));
+            hit.getHighlightField("title").forEach(ele->post.setTitle(ele));
+//            System.out.println(post.getTitle());
+//            post.setContent(hit.getHighlightField("content").get(0));
+            discussPosts.add(post);
+            System.out.println(hit);
+//            hit.getHighlightField("title").forEach(ele->System.out.println(ele));
+        });
+        for(DiscussPost post : discussPosts) {
+            System.out.println(post);
+        }
+    }
 
 
 }
