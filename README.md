@@ -17,6 +17,14 @@ A discussion community website prototype with common functionalities:
 ## Tech stack:
 ![arc](https://github.com/user-attachments/assets/e41b1268-797f-40fc-a77f-785624987894)
 
+## A glimpse of the website: 
+#### Index Page
+![index](https://github.com/user-attachments/assets/006278f1-4019-418a-a556-d86e2774a85f)  
+#### Message
+![message](https://github.com/user-attachments/assets/dc25b0ff-9c28-4f81-b976-a33132f41efe)
+
+
+
 
 
 
