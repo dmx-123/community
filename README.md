@@ -1,7 +1,7 @@
 # Introduction
 "一个仿照牛客网实现的讨论社区，不仅实现了基本的注册，登录，发帖，评论，点赞，回复功能，同时使用前缀树实现敏感词过滤，使用wkhtmltopdf生成长图和pdf，实现网站UV和DAU统计，并将用户头像等信息存于云服务器"  
 
-A community blog website prototype with common functionalities:   
+A community blog website prototype with common functionalities.   
 
 - Implemented Trie Tree data structure to filter out sensitive words.  
 - Used Spring Security for permission control to replace the interceptor, and applied personal authentication scheme to replace the security authentication process, making permission authentication and control more convenient and flexible.  
