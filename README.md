@@ -14,10 +14,10 @@ A discussion community website prototype with common functionalities:
 实现网站UV和DAU统计    
 将用户头像等信息存于AWS云服务器  
 
-## Tech stack:
+## Tech Stack:
 ![arc](https://github.com/user-attachments/assets/e41b1268-797f-40fc-a77f-785624987894)
 
-## A glimpse of the website: 
+## A Glimpse Of The Website: 
 #### Index Page
 ![index](https://github.com/user-attachments/assets/006278f1-4019-418a-a556-d86e2774a85f)  
 #### Message
