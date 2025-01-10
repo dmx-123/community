@@ -9,7 +9,7 @@ A community blog website prototype with common functionalities.
 - Applied Redis advanced data type HyperLogLog to count UV (Unique Visitor), and Bitmap to count DAU (Daily Active User).  
 - Used Kafka to process system notifications such as comments, likes, and follows, and used event encapsulation to build a powerful asynchronous messaging system.
 - Applied Elasticsearch for global search, and add keyword highlighting and other functions through event encapsulation.
-- For the trending module, I used distributed cache Redis and local cache Caffeine as multi-level cache to avoid cache avalanche, increased QPS by 20 times (10-200), and greatly improved the website access speed. I also used Quartz to regularly update the hot thread ranking.
+- For the trending module, we used distributed cache Redis and local cache Caffeine as multi-level cache to avoid cache avalanche, increased QPS by 20 times (10-200), and greatly improved the website access speed. We also used Quartz to regularly update the hot thread ranking.
 
 ## To-Do List:
 生成长图和pdf    
