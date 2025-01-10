@@ -27,7 +27,5 @@ A community blog website prototype with common functionalities.
 ![message](https://github.com/user-attachments/assets/dc25b0ff-9c28-4f81-b976-a33132f41efe)
 
 
-### This project is for self-learning only. 
-
 
 
