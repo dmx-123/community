@@ -14,6 +14,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
@@ -81,6 +83,8 @@ public class ElasticsearchTests {
         discussRepository.deleteAll();
     }
 
+    // 这里参照了如下老哥的代码, 不得不说Elasticsearch版本从5到8变了太多了。。（虽然好像也正常。。）
+    // https://github.com/Uunravel/community
     @Test
     public void testSearchClient() throws IOException {
 
