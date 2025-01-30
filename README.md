@@ -1,5 +1,4 @@
 # Project Introduction
-"一个仿照牛客网实现的讨论社区，不仅实现了基本的注册，登录，发帖，评论，点赞，回复，搜索，热帖排行等功能，同时使用前缀树实现敏感词过滤，使用wkhtmltopdf生成长图和pdf，实现网站UV和DAU统计，并将用户头像等信息存于云服务器"  
 
 A community blog website prototype with common functionalities.   
 
@@ -11,8 +10,7 @@ A community blog website prototype with common functionalities.
 - Applied Elasticsearch for global search, and add keyword highlighting and other functions through event encapsulation.
 - For the trending module, we used distributed cache Redis and local cache Caffeine as multi-level cache to avoid cache avalanche, increased QPS by 20 times (10-200), and greatly improved the website access speed. We also used Quartz to regularly update the hot thread ranking.
 
-## To-Do List:
-生成长图和pdf    
+## To-Do List:    
 实现网站UV和DAU统计    
 将用户头像等信息存于AWS云服务器  
 使用爬虫对网站进行数据填充
